@@ -5,11 +5,11 @@ A idéia é simular 3 algoritmos de escalonagem de processo: Shortest Job First,
 
 To Do List:
 - <s>atualizar o executar_processo() para usar tempo real de processamento ao invés de usar sleep()</s>
-- Implementar afinidade de CPU (funções Afinitty), mas preciso testas nos PCs do IME com Linux
+- Implementar afinidade de CPU (funções Afinitty), mas preciso testar nos PCs do IME com Linux
 - <s>atualizar os escalonadores para medir tempo real de execução ao invés de gerir um relógio virtual. </s>
 - <s>adicionar a identificação de erros no comando Kill no imesh</s>
 - <s>Adicionar Header (arquivos .h)</s>
-- Criar o arquivo Makefile.
+- <s>Criar o arquivo Makefile.</s>
 - Terminar os slides para o envio da atividade pelo moodle
 - Usar Markdown para embelezar este README (sejemos sinceros isso provavelmente não vai ser feito)
 
