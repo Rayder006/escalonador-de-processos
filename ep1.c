@@ -43,7 +43,7 @@ double tempo_inicial = 0.0; // para implementar o Busy-Waiting nas threads
 //     int finalizado;
 // } Processo;
 
-static Processo* pop(Queue* q){
+Processo* pop(Queue* q){
     if(q==NULL || q->head==NULL){
         return NULL;
     }
@@ -55,7 +55,7 @@ static Processo* pop(Queue* q){
 }
 
     // implementando a queue para Ready Queue (preciso refatorar os escalonadores)
-static void insert(Queue* q, Processo* p, int op){ // op 1=rr, op 2=sjf, op 3=priority_sch
+void insert(Queue* q, Processo* p, int op){ // op 1=rr, op 2=sjf, op 3=priority_sch
     Node* n = malloc(sizeof(Node));
     if(n==NULL){
         printf("Erro de alocação da Fila\n");
@@ -130,7 +130,7 @@ static void insert(Queue* q, Processo* p, int op){ // op 1=rr, op 2=sjf, op 3=pr
 //     return NULL;
 // }
 
-static void* executar_processo(void* arg){
+void* executar_processo(void* arg){
     Processo* p = (Processo*)arg;
     // time_t start, now;
     // time(&start);
@@ -190,7 +190,7 @@ void salvar_resultados(Processo *processos, int num_processos){
 }
 
 // agora isso só serve pra ordenar os processos por tempo de inicio
-static void sort(Processo* processos, int n){
+void sort(Processo* processos, int n){
     Processo tmp;
     for(int i=0;i<n;i++){
             for(int j=0; j<n-i-1;j++){
@@ -204,10 +204,10 @@ static void sort(Processo* processos, int n){
 }
 
 void shortest_job_first(Processo* processos, int num_processos){
-    int tempo_atual =0;
+    // int tempo_atual =0;
     int processos_concluidos=0;
     int ct=0; // ct controla os processos ja inicializados
-    Queue ready_queue ={NULL, NULL};
+    Queue ready_queue ={NULL}; // agora como Queue não tem mais tail, 
     struct timespec now;
     double act_time;
 
@@ -226,7 +226,7 @@ void shortest_job_first(Processo* processos, int num_processos){
         if(pp == NULL){
             usleep(800000); // botei para 800ms (menos que 1s para contar pelos jitterings das outras funções) 
             continue;
-            //tempo_atual++; // caso não tenha nenhum processo na fila nesse instante de tempo, só passa 1 segundo
+            // tempo_atual1++; // caso não tenha nenhum processo na fila nesse instante de tempo, só passa 1 segundo
         } else{
             // Processo p = *pp;
             pthread_mutex_lock(&pp->mutex);
@@ -239,7 +239,7 @@ void shortest_job_first(Processo* processos, int num_processos){
                 pthread_cond_wait(&pp->cond, &pp->mutex);
             }
             // sleep(pp->dt); // aqui o escalonador "dorme" pra simular a passagem de tempo
-            // tempo_atual += pp->dt; // então tem que aumentar o tempo atual pra poder inicializar os próximos processos na Fila de Prontos
+            // tempo_atual1 += pp->dt; // então tem que aumentar o tempo atual pra poder inicializar os próximos processos na Fila de Prontos
 
             pp->finalizado = 1; // finalizado = 1 pois no sfj sem preempção o processo roda até acabar
             clock_gettime(CLOCK_MONOTONIC, &now);
@@ -252,7 +252,7 @@ void shortest_job_first(Processo* processos, int num_processos){
 }
 
 void round_robin(Processo* processos, int num_processos){
-    int tempo_atual = 0;
+    // int tempo_atual = 0;
     int processos_concluidos = 0;
     Queue ready_queue ={NULL, NULL};
     int ct = 0;
@@ -271,7 +271,7 @@ void round_robin(Processo* processos, int num_processos){
         if(pp!=NULL && pp->finalizado==0) insert(&ready_queue, pp, 1); // agora insiro o processo anterior só DEPOIS da nova batch 
         pp = pop(&ready_queue);
         if(pp == NULL){
-            //tempo_atual++; // Avança o relógio virtual
+            // tempo_atual1++; // Avança o relógio virtual
             usleep(800000);
             continue;
         }
@@ -285,7 +285,7 @@ void round_robin(Processo* processos, int num_processos){
         while(pp->pode_executar){
             pthread_cond_wait(&pp->cond, &pp->mutex);
         }
-        // tempo_atual += q;
+        // tempo_atual1 += q;
         
         if(pp->tempo_restante <= 0){
             pp->finalizado = 1;
@@ -303,7 +303,7 @@ void round_robin(Processo* processos, int num_processos){
 }
 
 void priority_scheduler(Processo* processos, int num_processos){ // aqui a base é a mesma do ao round_robin(), somente com quantums fixos e a prioridade é reavaliada na inserção na fila
-    int tempo_atual = 0;
+    // int tempo_atual=0;
     int processos_concluidos = 0;
     Queue ready_queue ={NULL, NULL};
     int ct = 0;
@@ -322,13 +322,13 @@ void priority_scheduler(Processo* processos, int num_processos){ // aqui a base 
         if(pp!=NULL && pp->finalizado==0) insert(&ready_queue, pp, 1); // agora insiro o processo anterior só DEPOIS da nova batch 
         pp = pop(&ready_queue);
         if(pp == NULL){
-            //tempo_atual++; // Avança o relógio virtual
+            // tempo_atual++; // Avança o relógio virtual
             usleep(800000);
             continue;
         }
 
         pthread_mutex_lock(&pp->mutex);
-        int margem = pp->deadline - tempo_atual;
+        int margem = pp->deadline - act_time;
         int q;
 
         if(margem <= pp->tempo_restante){
@@ -346,7 +346,7 @@ void priority_scheduler(Processo* processos, int num_processos){ // aqui a base 
         while(pp->pode_executar){
             pthread_cond_wait(&pp->cond, &pp->mutex);
         }
-        tempo_atual += q;
+        act_time += q;
         
         if(pp->tempo_restante <= 0){
             pp->finalizado = 1;
