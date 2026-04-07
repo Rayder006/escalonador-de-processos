@@ -10,12 +10,11 @@ To Do List:
 - <s>adicionar a identificação de erros no comando Kill no imesh</s>
 - <s>Adicionar Header (arquivos .h)</s>
 - <s>Criar o arquivo Makefile.</s>
-- Terminar os slides para o envio da atividade pelo moodle
+- <s>Terminar os slides para o envio da atividade pelo moodle</s>
 - Usar Markdown para embelezar este README (sejemos sinceros isso provavelmente não vai ser feito)
 
-Para usar este projeto, primeiro compile os arquivos ep1.c e imesh.c, utilizando seu compilador escolhido, como:
--  $ make imesh
--  $ make ep1
+Para usar este projeto, primeiro compile os arquivos ep1.c e imesh.c, especificamente com o comando:
+- $ make all
 
 E depois executá-los:
 -  $ ./imesh
@@ -25,3 +24,5 @@ Na função main do arquivo ep1.c está definido os ids dos escalonadores, a seg
   - Shortest Job First : 1
   - Round Robin : 2
   - Priority Scheduler : 3
+
+Os algoritmos implementados nesse projeto foram amplamente baseados no conteúdo visto nas aulas de MAC0422 de 2026.1 no IME/USP, pelo professor Daniel Macedo e nos catálogos de Linux online (www.opengroup.org; man7.org; e en.cppreference.com) , assim como na playlist de Teoria de Sistemas Operacionais do canal Core Dumped (https://www.youtube.com/@CoreDumpped) no youtube e foram usadas algumas soluções apresentadas por usuários do [StackOverflow](https://stackoverflow.com/questions) (por exemplo, para o clock_gettime()). Foi feito uso de inteligências artificiais (Gemini) para gerar os arquivos de Trace e corrigir alguns bugs de implementação do relógio virtual (mas posteriormente isso foi trocado por um relógio real + busy wait nas threads)
