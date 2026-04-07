@@ -215,7 +215,7 @@ void shortest_job_first(Processo* processos, int num_processos){
     double act_time;
 
         // lembra que processos já está ordenado por tempo de início
-    while(processos_concluidos < num_processos && round(act_time) < 120){ // limite de tempo de 120 segundos
+    while(processos_concluidos < num_processos){ // limite de tempo de 120 segundos
         clock_gettime(CLOCK_MONOTONIC, &now);
         act_time = (now.tv_sec - start_t.tv_sec) + ((now.tv_nsec - start_t.tv_nsec) / 1e9);
         // primeiro eu inicializo os processos que devem ser inicializados na Fila de Prontos
@@ -263,7 +263,7 @@ void round_robin(Processo* processos, int num_processos){
     struct timespec now;
     double act_time;
 
-    while(processos_concluidos < num_processos && round(act_time) < 120){
+    while(processos_concluidos < num_processos){
         clock_gettime(CLOCK_MONOTONIC, &now);
         act_time = (now.tv_sec - start_t.tv_sec) +  ((now.tv_nsec - start_t.tv_nsec) / 1e9);
         while(ct < num_processos && processos[ct].t0 <= act_time){
@@ -314,7 +314,7 @@ void priority_scheduler(Processo* processos, int num_processos){ // aqui a base 
     struct timespec now;
     double act_time;
 
-    while(processos_concluidos < num_processos && round(act_time) < 120){
+    while(processos_concluidos < num_processos){
         clock_gettime(CLOCK_MONOTONIC, &now);
         act_time = (now.tv_sec - start_t.tv_sec) +  ((now.tv_nsec - start_t.tv_nsec) / 1e9);
         while(ct < num_processos && processos[ct].t0 <= act_time){

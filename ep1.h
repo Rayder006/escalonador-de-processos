@@ -11,10 +11,10 @@ typedef struct{
     char nome[33];
     int deadline;
     int t0;
-    int dt;
+    double dt;
     int tf;
-    int tempo_restante;
-    int tempo_rodar;
+    double tempo_restante;
+    double tempo_rodar;
     pthread_t thread_id;
     pthread_mutex_t mutex;
     pthread_cond_t cond;
