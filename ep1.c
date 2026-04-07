@@ -1,14 +1,19 @@
+#define _GNU_SOURCE  // Necessário para pthread_setaffinity_np no Linux (falta implementar)
+#include <time.h>
+#include <sched.h>   // Para a manipulação de CPU sets 
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
 #include <unistd.h>
 #include <string.h>
-#include <time.h>
+#include <pthread.h>
+#include <sys/time.h>
+
 
 const char *arquivo_saida; // global para o arquivo de saída para facilitar escrever no output.txt
 const int QUANTUM = 2;
 const int MARGEM = 5; // margem de risco para o priority_scheduler
 int preempcoes = 0; // Contador global de preempções caso seja escolhido o ROund Robin ( para facilitar escrever no arquivo de saída)
+double tempo_inicial = 0.0; // para implementar o Busy-Waiting nas threads
 
 typedef struct Node{
     Processo* p;
@@ -120,6 +125,45 @@ void* executar_processo(void* arg){
         pthread_mutex_unlock(&p->mutex);
     }
     return NULL;
+}
+
+void* executar_processo(void* arg){
+    Processo* p = (Processo*)arg;
+    time_t start, now;
+    time(&start);
+    while(1){
+        pthread_mutex_lock(&p->mutex); 
+        while(!p->pode_executar && !p->finalizado){ // agora espera o escalonador liberar
+            pthread_cond_wait(&p->cond, &p->mutex);
+        }
+
+        if(p->finalizado || p->tempo_restante <= 0){
+            pthread_mutex_unlock(&p->mutex);
+            break;
+        }
+
+        pthread_mutex_unlock(&p->mutex);
+
+        struct timespec start, now; // a struct timespec é um par (tv_sec, tv_nsec), que captura segundos e nanosegundos
+        clock_gettime(CLOCK_MONOTONIC, &start); // melhor usar clock_gettime() pois apenas time() retorna em segundos e daria muitos erros
+        double tempo_gasto = 0.0;
+
+        while(tempo_gasto< p->tempo_rodar){
+            volatile int dummy =0; // volatile para forçar a CPU a rodar isso e não apagar o "loop inutil"
+            for(int i=0;i<1000;i++){ // loop apenas para fazer Busy-Wait
+                dummy++;
+            }
+            clock_gettime(CLOCK_MONOTONIC, &now);
+            tempo_gasto = (now.tv_sec - start.tv_sec) + ((now.tv_nsec - start.tv_nsec) / 1e9); // 1e9 aqui pois tv_nsec é nanosegundos
+        }
+        pthread_mutex_lock(&p->mutex);
+
+        // sleep(p->tempo_rodar); // troquei para Busy-Wait
+        p->tempo_restante -= p->tempo_rodar;
+        p->pode_executar=0;
+        pthread_cond_signal(&p->cond);
+        pthread_mutex_unlock(&p->mutex);
+    }
 }
 
 void salvar_resultados(Processo *processos, int num_processos){

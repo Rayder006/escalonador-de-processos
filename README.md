@@ -4,7 +4,7 @@ Pequeno projeto contendo um Imesh (mini-bash) e um escalonador de processos para
 A idéia é simular 3 algoritmos de escalonagem de processo: Shortest Job First, Round Robin e Priority Scheduler (priorizando terminar o máximo de processos possíveis dentro do prazo). 
 
 To Do List:
-- atualizar o executar_processo() para usar tempo real de processamento ao invés de usar sleep()
+- <s>atualizar o executar_processo() para usar tempo real de processamento ao invés de usar sleep()</s>
 - Implementar afinidade de CPU (funções Afinitty), mas preciso testas nos PCs do IME com Linux
 - atualizar os escalonadores para medir tempo real de execução ao invés de gerir um relógio virtual. 
 - adicionar a identificação de erros no comando Kill no imesh
