@@ -1,5 +1,6 @@
 #define _GNU_SOURCE  // Necessário para pthread_setaffinity_np no Linux (falta implementar)
 #include <time.h>
+#include <math.h> // para o round()
 #include <sched.h>   // Para a manipulação de CPU sets 
 #include <stdio.h>
 #include <stdlib.h>

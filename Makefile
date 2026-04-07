@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -g
-LIBS = -lpthread -lreadline
+LIBS = -lpthread -lreadline -lm
 
 all: imesh ep1
 

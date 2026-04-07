@@ -7,15 +7,6 @@
 #define MARGEM 5
 #define MAX_PROCESSOS 50
 
-typedef struct Node{
-    Processo* p;
-    struct Node *next;
-} Node;
-
-typedef struct Queue{
-    Node* head;
-    // Node* tail; // tail acabou nem sendo usado
-} Queue;
 typedef struct{
     char nome[33];
     int deadline;
@@ -30,6 +21,16 @@ typedef struct{
     int pode_executar;
     int finalizado;
 } Processo;
+
+typedef struct Node{
+    Processo* p;
+    struct Node *next;
+} Node;
+
+typedef struct Queue{
+    Node* head;
+    // Node* tail; // tail acabou nem sendo usado
+} Queue;
 
 Processo* pop(Queue* q);
 void insert(Queue* q, Processo* p, int op);
