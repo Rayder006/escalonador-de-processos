@@ -8,6 +8,7 @@ To Do List:
 - Implementar afinidade de CPU (funções Afinitty), mas preciso testas nos PCs do IME com Linux
 - <s>atualizar os escalonadores para medir tempo real de execução ao invés de gerir um relógio virtual. </s>
 - <s>adicionar a identificação de erros no comando Kill no imesh</s>
+- <s>Adicionar Header (arquivos .h)</s>
 - Criar o arquivo Makefile.
 - Terminar os slides para o envio da atividade pelo moodle
 - Usar Markdown para embelezar este README (sejemos sinceros isso provavelmente não vai ser feito)
