@@ -141,8 +141,11 @@ void* executar_processo(void* arg){
         }
 
         if(p->finalizado || p->tempo_restante <= 0){
+            p->finalizado=1;
+            p->pode_executar =0;
+            pthread_cond_signal(&p->cond);
             pthread_mutex_unlock(&p->mutex);
-            break;
+            return NULL;
         }
 
         pthread_mutex_unlock(&p->mutex);
@@ -406,6 +409,10 @@ int main(int argc, char* argv[]){
 
     // após o escalonador terminar, espera as threads
     for(int i=0; i<ct; i++){
+        pthread_mutex_lock(&processos[i].mutex);
+        processos[i].finalizado = 1;
+        pthread_cond_signal(&processos[i].cond);
+        pthread_mutex_unlock(&processos[i].mutex);
         pthread_join(processos[i].thread_id, NULL);
         pthread_mutex_destroy(&processos[i].mutex);
         pthread_cond_destroy(&processos[i].cond);
