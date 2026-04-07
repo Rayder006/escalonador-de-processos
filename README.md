@@ -6,11 +6,11 @@ A idéia é simular 3 algoritmos de escalonagem de processo: Shortest Job First,
 To Do List:
 - <s>atualizar o executar_processo() para usar tempo real de processamento ao invés de usar sleep()</s>
 - Implementar afinidade de CPU (funções Afinitty), mas preciso testas nos PCs do IME com Linux
-- atualizar os escalonadores para medir tempo real de execução ao invés de gerir um relógio virtual. 
+- <s>atualizar os escalonadores para medir tempo real de execução ao invés de gerir um relógio virtual. </s>
 - adicionar a identificação de erros no comando Kill no imesh
 - Criar o arquivo Makefile.
 - Terminar os slides para o envio da atividade pelo moodle
-- Usar Markdown para embelezar este README
+- Usar Markdown para embelezar este README (sejemos sinceros isso provavelmente não vai ser feito)
 
 Para usar este projeto, primeiro compile os arquivos ep1.c e imesh.c, utilizando seu compilador escolhido, como:
 -  $ make imesh
