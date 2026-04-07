@@ -320,7 +320,7 @@ void priority_scheduler(Processo* processos, int num_processos){ // aqui a base 
         act_time = (now.tv_sec - start_t.tv_sec) +  ((now.tv_nsec - start_t.tv_nsec) / 1e9);
         while(ct < num_processos && processos[ct].t0 <= act_time){
             pthread_create(&processos[ct].thread_id, NULL, executar_processo, &processos[ct]);
-            insert(&ready_queue, &processos[ct], 1);
+            insert(&ready_queue, &processos[ct], 3);
             ct++;
         }
         if(pp!=NULL && pp->finalizado==0) insert(&ready_queue, pp, 3); // agora insiro o processo anterior só DEPOIS da nova batch 
