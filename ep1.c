@@ -12,38 +12,37 @@
 
 
 const char *arquivo_saida; // global para o arquivo de saída para facilitar escrever no output.txt
-const int QUANTUM = 2;
-const int MARGEM = 5; // margem de risco para o priority_scheduler
 int preempcoes = 0; // Contador global de preempções caso seja escolhido o ROund Robin ( para facilitar escrever no arquivo de saída)
 struct timespec start_t;
 double tempo_inicial = 0.0; // para implementar o Busy-Waiting nas threads
 
-typedef struct Node{
-    Processo* p;
-    struct Node *next;
-} Node;
+    // agora estão definidas no header
+// typedef struct Node{
+//     Processo* p;
+//     struct Node *next;
+// } Node;
 
-typedef struct Queue{
-    Node* head;
-    Node* tail;
-} Queue;
+// typedef struct Queue{
+//     Node* head;
+//     Node* tail;
+// } Queue;
 
-typedef struct{
-    char nome[33];
-    int deadline;
-    int t0;
-    int dt;
-    int tf; // para conseguir imprimir o tempo final no output.txt
-    int tempo_restante;
-    int tempo_rodar; // mudança para alocação dinamica de quantuns pelo escalonador escolihdo
-    pthread_t thread_id;
-    pthread_mutex_t mutex;
-    pthread_cond_t cond;
-    int pode_executar; // usado como flag
-    int finalizado;
-} Processo;
+// typedef struct{
+//     char nome[33];
+//     int deadline;
+//     int t0;
+//     int dt;
+//     int tf; // para conseguir imprimir o tempo final no output.txt
+//     int tempo_restante;
+//     int tempo_rodar; // mudança para alocação dinamica de quantuns pelo escalonador escolihdo
+//     pthread_t thread_id;
+//     pthread_mutex_t mutex;
+//     pthread_cond_t cond;
+//     int pode_executar; // usado como flag
+//     int finalizado;
+// } Processo;
 
-Processo* pop(Queue* q){
+static Processo* pop(Queue* q){
     if(q==NULL || q->head==NULL){
         return NULL;
     }
@@ -55,7 +54,7 @@ Processo* pop(Queue* q){
 }
 
     // implementando a queue para Ready Queue (preciso refatorar os escalonadores)
-void insert(Queue* q, Processo* p, int op){ // op 1=rr, op 2=sjf, op 3=priority_sch
+static void insert(Queue* q, Processo* p, int op){ // op 1=rr, op 2=sjf, op 3=priority_sch
     Node* n = malloc(sizeof(Node));
     if(n==NULL){
         printf("Erro de alocação da Fila\n");
@@ -130,7 +129,7 @@ void insert(Queue* q, Processo* p, int op){ // op 1=rr, op 2=sjf, op 3=priority_
 //     return NULL;
 // }
 
-void* executar_processo(void* arg){
+static void* executar_processo(void* arg){
     Processo* p = (Processo*)arg;
     // time_t start, now;
     // time(&start);
@@ -190,7 +189,7 @@ void salvar_resultados(Processo *processos, int num_processos){
 }
 
 // agora isso só serve pra ordenar os processos por tempo de inicio
-void sort(Processo* processos, int n){
+static void sort(Processo* processos, int n){
     Processo tmp;
     for(int i=0;i<n;i++){
             for(int j=0; j<n-i-1;j++){
@@ -367,7 +366,7 @@ int main(int argc, char* argv[]){
         perror("imesh: erro ao executar o simulador");
         exit(1);
     }
-    Processo processos[55]; // buffer com 5 de sentinela para não ter segfault
+    Processo processos[MAX_PROCESSOS + 5]; // buffer com 5 de sentinela para não ter segfault
     arquivo_saida = argv[3];
     int ct=0; // contador da qtd. de processos
     FILE *fp = fopen(argv[2], "r");

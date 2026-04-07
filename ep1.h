@@ -3,6 +3,11 @@
 
 #include <pthread.h>
 
+#define QUANTUM 2
+#define MARGEM 5
+#define MAX_PROCESSOS 50
+
+
 typedef struct{
     char nome[33];
     int deadline;
@@ -25,7 +30,7 @@ typedef struct Node{
 
 typedef struct Queue{
     Node* head;
-    Node* tail;
+    // Node* tail; // tail acabou nem sendo usado
 } Queue;
 
 Processo* pop(Queue* q);
