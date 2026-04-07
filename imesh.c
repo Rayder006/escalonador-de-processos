@@ -53,18 +53,12 @@ void run_kill(char *input){
 
     if(sscanf(input, "kill -%d %d", &sinal, &pid)== 2){
         if(kill(pid, sinal)== -1){
-            if(errno == ESRCH){
-                fprintf(stderr, "imesh: kill: (%d) - No such process\n", pid);
-            } else if(errno == EPERM){
-                fprintf(stderr, "imesh: kill: (%d) - Operation not permitted\n", pid);
-            } else { // No caso de outro erro, eu não sei se posso usar perror()mas nao sabia o que fazer no lugar.
-                perror("imesh: kill");
-            }
+            fprintf(stderr, "imesh: kill: %d - %s\n", pid, strerror(errno));
         }
     } 
-    // else { // nao sei se deveria ter isso
-    //     fprintf(stderr, "imesh: kill: usage: kill -<sinal> <pid>\n");
-    // }
+    else {  // nao sei se deveria ter isso
+         fprintf(stderr, "imesh: kill: usage: kill -<sinal> <pid>\n");
+     }
 }
 
 int main(){
