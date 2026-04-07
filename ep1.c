@@ -106,27 +106,27 @@ void insert(Queue* q, Processo* p, int op){ // op 1=rr, op 2=sjf, op 3=priority_
     }
 }
 
-// simulação de execução (que as threads vão executar)
-void* executar_processo(void* arg){
-    Processo* p= (Processo*)arg;
-    while(1){
-        pthread_mutex_lock(&p->mutex); 
-        while(!p->pode_executar && !p->finalizado){ // agora espera o escalonador liberar
-            pthread_cond_wait(&p->cond, &p->mutex);
-        }
+// // simulação de execução (que as threads vão executar)
+// void* executar_processo(void* arg){
+//     Processo* p= (Processo*)arg;
+//     while(1){
+//         pthread_mutex_lock(&p->mutex); 
+//         while(!p->pode_executar && !p->finalizado){ // agora espera o escalonador liberar
+//             pthread_cond_wait(&p->cond, &p->mutex);
+//         }
 
-        if(p->finalizado || p->tempo_restante <= 0){
-            pthread_mutex_unlock(&p->mutex);
-            break;
-        }
-        sleep(p->tempo_rodar);
-        p->tempo_restante -= p->tempo_rodar;
-        p->pode_executar=0;
-        pthread_cond_signal(&p->cond);
-        pthread_mutex_unlock(&p->mutex);
-    }
-    return NULL;
-}
+//         if(p->finalizado || p->tempo_restante <= 0){
+//             pthread_mutex_unlock(&p->mutex);
+//             break;
+//         }
+//         sleep(p->tempo_rodar);
+//         p->tempo_restante -= p->tempo_rodar;
+//         p->pode_executar=0;
+//         pthread_cond_signal(&p->cond);
+//         pthread_mutex_unlock(&p->mutex);
+//     }
+//     return NULL;
+// }
 
 void* executar_processo(void* arg){
     Processo* p = (Processo*)arg;
