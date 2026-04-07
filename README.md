@@ -10,14 +10,15 @@ To Do List:
 - adicionar a identificação de erros no comando Kill no imesh
 - Criar o arquivo Makefile.
 - Terminar os slides para o envio da atividade pelo moodle
+- Usar Markdown para embelezar este README
 
 Para usar este projeto, primeiro compile os arquivos ep1.c e imesh.c, utilizando seu compilador escolhido, como:
-  $ make imesh
-  $ make ep1
+-  $ make imesh
+-  $ make ep1
 
 E depois executá-los:
-  $ ./imesh
-  $ ./ep1 <id_do_escalonador> <path_input.txt> <path_output.txt>
+-  $ ./imesh
+-  $ ./ep1 <id_do_escalonador> <path_input.txt> <path_output.txt>
 
 Na função main do arquivo ep1.c está definido os ids dos escalonadores, a seguir:
   Shortest Job First : 1
