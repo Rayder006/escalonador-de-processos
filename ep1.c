@@ -8,7 +8,7 @@
 #include <pthread.h>
 #include <sys/time.h>
 
-#include <ep1.h>
+#include "ep1.h"
 
 
 const char *arquivo_saida; // global para o arquivo de saída para facilitar escrever no output.txt
