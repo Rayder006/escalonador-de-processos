@@ -21,6 +21,6 @@ E depois executá-los:
 -  $ ./ep1 <id_do_escalonador> <path_input.txt> <path_output.txt>
 
 Na função main do arquivo ep1.c está definido os ids dos escalonadores, a seguir:
-  Shortest Job First : 1
-  Round Robin : 2
-  Priority Scheduler : 3
+  - Shortest Job First : 1
+  - Round Robin : 2
+  - Priority Scheduler : 3
