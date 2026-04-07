@@ -295,12 +295,13 @@ void round_robin(Processo* processos, int num_processos){
             clock_gettime(CLOCK_MONOTONIC, &now);
             pp->tf = (now.tv_sec - start_t.tv_sec) + ((now.tv_nsec - start_t.tv_nsec) / 1e9);
             processos_concluidos++;
+            pthread_mutex_unlock(&pp->mutex); // faltava liberar ele antes de dar null
             pp=NULL;
         } else{
             preempcoes++;
+            pthread_mutex_unlock(&pp->mutex); // agora libero aqui também
             // insert(&ready_queue, pp, 1);
         }
-        pthread_mutex_unlock(&pp->mutex);
     }
     salvar_resultados(processos, num_processos);
 }
@@ -322,7 +323,7 @@ void priority_scheduler(Processo* processos, int num_processos){ // aqui a base 
             insert(&ready_queue, &processos[ct], 1);
             ct++;
         }
-        if(pp!=NULL && pp->finalizado==0) insert(&ready_queue, pp, 1); // agora insiro o processo anterior só DEPOIS da nova batch 
+        if(pp!=NULL && pp->finalizado==0) insert(&ready_queue, pp, 3); // agora insiro o processo anterior só DEPOIS da nova batch 
         pp = pop(&ready_queue);
         if(pp == NULL){
             // tempo_atual++; // Avança o relógio virtual
@@ -356,11 +357,12 @@ void priority_scheduler(Processo* processos, int num_processos){ // aqui a base 
             clock_gettime(CLOCK_MONOTONIC, &now);
             pp->tf = (now.tv_sec - start_t.tv_sec) + ((now.tv_nsec - start_t.tv_nsec) / 1e9);
             processos_concluidos++;
+            pthread_mutex_unlock(&pp->mutex); // mesma coisa do round_robin()
             pp=NULL;
         } else{
+            pthread_mutex_unlock(&pp->mutex);
             preempcoes++;
         }
-        pthread_mutex_unlock(&pp->mutex);
     }
     salvar_resultados(processos, num_processos);
 }
