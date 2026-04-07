@@ -257,7 +257,7 @@ void shortest_job_first(Processo* processos, int num_processos){
 void round_robin(Processo* processos, int num_processos){
     // int tempo_atual = 0;
     int processos_concluidos = 0;
-    Queue ready_queue ={NULL, NULL};
+    Queue ready_queue ={NULL};
     int ct = 0;
     Processo* pp = NULL;
     struct timespec now;
@@ -308,7 +308,7 @@ void round_robin(Processo* processos, int num_processos){
 void priority_scheduler(Processo* processos, int num_processos){ // aqui a base é a mesma do ao round_robin(), somente com quantums fixos e a prioridade é reavaliada na inserção na fila
     // int tempo_atual=0;
     int processos_concluidos = 0;
-    Queue ready_queue ={NULL, NULL};
+    Queue ready_queue ={NULL};
     int ct = 0;
     Processo* pp = NULL;
     struct timespec now;
