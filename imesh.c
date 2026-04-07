@@ -100,6 +100,8 @@ int main(){
                     }
                     else if(strncmp(input, "./ep1", 5)== 0){
                         run_simulador(input); 
+                    } else {
+                        printf("\n%s: Comando Não Encontrado\n", input);
                     }
                     exit(1);
                 }else{
