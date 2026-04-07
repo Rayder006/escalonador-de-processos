@@ -386,7 +386,7 @@ int main(int argc, char* argv[]){
 
     while((lida=getline(&linha, &len, fp))!= -1){
         // bufferização do processo(no array processos)+ criação das threads
-        if(sscanf(linha, "%s %d %d %d", processos[ct].nome, &processos[ct].deadline, &processos[ct].t0, &processos[ct].dt)== 4){
+        if(sscanf(linha, "%s %d %d %lf", processos[ct].nome, &processos[ct].deadline, &processos[ct].t0, &processos[ct].dt)== 4){
             printf("Lido: %s | Deadline: %d | t0: %d | dt: %d\n", processos[ct].nome, processos[ct].deadline, processos[ct].t0, processos[ct].dt); // debug
             processos[ct].tempo_restante = processos[ct].dt;
             processos[ct].pode_executar = 0;
